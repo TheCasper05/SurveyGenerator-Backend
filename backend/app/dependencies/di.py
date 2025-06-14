@@ -1,6 +1,7 @@
 from app.infrastructure.repositories.survey_repository import SurveyRepository
 from app.application.survey_service import SurveyService
 from app.core.database import SessionLocal
+from fastapi import Depends
 
 def get_db():
     db = SessionLocal()
