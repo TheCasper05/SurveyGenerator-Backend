@@ -1,5 +1,5 @@
 from app.domain.survey import Survey
-from app.infrastructure.models.survey_model import SurveyModel
+from app.infrastructure.models.survey_model import SurveyModel, QuestionModel
 from app.core.database import SessionLocal
 from sqlalchemy.orm import Session
 
@@ -18,4 +18,8 @@ class SurveyRepository:
     
     def get_surveys(db: Session):
         return db.query(SurveyModel).all()
+    
+    def get_questions_by_survey_id(db: Session, survey_id: int):
+        return db.query(QuestionModel).filter(QuestionModel.survey_id == survey_id).all()
+
 
