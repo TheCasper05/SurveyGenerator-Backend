@@ -1,0 +1,14 @@
+docker compose up --build (levantar contenedor)
+docker compose up --build -d (Reiniciar en segundo plano automáticamente)
+docker compose down (detener el servidor)
+docker exec -it surveygenerator-backend bash (Ingresar al contenedor de backend)
+docker exec -it surveygenerator-db bash (Ingresar al contenedor de database)
+psql -U postgres (Entrar a sql de la base de datos por terminal)
+\c surveydb; (Conectar con db)
+DELETE FROM ____ (ELIMINAR)
+TRUNCATE TABLE surveys RESTART IDENTITY CASCADE; (Reiniciar id encuestas)
+TRUNCATE TABLE questions RESTART IDENTITY CASCADE; (Reiniciar id preguntas)
+
+
+docker ps (Ver contenedores)
+

@@ -1,15 +1,32 @@
 from pydantic import BaseModel
 from typing import Literal
 from enum import Enum
+from typing import List
 
 class QuestionType(str, Enum):
     multiple_choice = "multiple_choice"
     satisfaction = "satisfaction"
     text = "text"
+    
+class QuestionBase(BaseModel):
+    text: str
+    question_type: QuestionType
+    
+class QuestionCreate(QuestionBase):
+    pass
+
+
+class Question(QuestionBase):
+    id: int
+    
+    model_config = {
+    "from_attributes": True
+    }
 
 class SurveyCreate(BaseModel):
     title: str
     description: str | None = None
+    questions: List[QuestionCreate] = []
 
 class SurveyUpdate(BaseModel):
     title: str
@@ -27,17 +44,3 @@ class Survey(BaseModel):
     "from_attributes": True
 }
     
-class QuestionBase(BaseModel):
-    text: str
-    question_type: QuestionType
-    
-class QuestionCreate(BaseModel):
-    pass
-
-
-class Question(QuestionBase):
-    id: int
-    
-    model_config = {
-    "from_attributes": True
-    }

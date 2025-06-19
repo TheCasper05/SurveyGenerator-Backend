@@ -7,7 +7,22 @@ from fastapi import HTTPException
 class SurveyService:
     def create_survey(self, db: Session, survey: SurveyCreate):
         repository = SurveyRepository(db)
-        return repository.save(survey)
+    
+        # Crear la encuesta
+        db_survey = SurveyModel(title=survey.title, description=survey.description)
+        db.add(db_survey)
+        db.commit()
+        db.refresh(db_survey)
+
+        # Crear preguntas con el campo order
+        for index, question_data in enumerate(survey.questions):
+            db_question = QuestionModel(**question_data.model_dump(), survey_id=db_survey.id, order=index)
+            db.add(db_question)
+    
+        db.commit()
+        return db_survey
+
+
 
 
     def get_surveys(self, db: Session):
@@ -55,7 +70,8 @@ class SurveyService:
         if not survey:
             raise HTTPException(status_code=404, detail="Survey not found")
     
-        return db.query(QuestionModel).filter(QuestionModel.survey_id == survey_id).all()
+        return db.query(QuestionModel).filter(QuestionModel.survey_id == survey_id).order_by(QuestionModel.order).all()
+
 
 
 survey_service = SurveyService()
