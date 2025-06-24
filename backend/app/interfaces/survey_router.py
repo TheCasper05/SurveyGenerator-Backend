@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from app.schemas.survey_schema import Survey, SurveyCreate, SurveyUpdate, QuestionCreate, Question
+from app.schemas.survey_schema import Survey, SurveyCreate, SurveyUpdate, QuestionCreate, Question, AnswerCreate, Answer
 from app.dependencies.di import get_db
 from sqlalchemy.orm import Session
 from typing import List
@@ -36,4 +36,12 @@ def create_question(survey_id: int, question: QuestionCreate, db: Session = Depe
 @router.get("/surveys/{survey_id}/questions/", response_model=list[Question])
 def list_questions_for_survey(survey_id: int, db: Session = Depends(get_db)):
     return survey_service.get_questions_for_survey(db, survey_id)
+
+@router.post("/surveys/{survey_id}/questions/{question_id}/answers/", response_model=Answer)
+def create_answer(survey_id: int, question_id: int, answer: AnswerCreate, db: Session = Depends(get_db)):
+    return survey_service.add_answer_to_question(db, survey_id, question_id, answer)
+
+@router.get("/surveys/{survey_id}/questions/{question_id}/answers/", response_model=List[Answer])
+def list_answers_for_question(survey_id: int, question_id: int, db: Session = Depends(get_db)):
+    return survey_service.get_answers_for_question(survey_id, question_id, db)
 

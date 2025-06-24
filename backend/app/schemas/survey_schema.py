@@ -43,4 +43,17 @@ class Survey(BaseModel):
     model_config = {
     "from_attributes": True
 }
-    
+class AnswerCreate(BaseModel):
+    answer: str
+
+class Answer(BaseModel):
+    id: int
+    survey_id: int
+    question_id: int
+    answer: str
+
+    model_config = {
+        "from_attributes": True
+    }
+
+

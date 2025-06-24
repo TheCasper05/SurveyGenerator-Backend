@@ -44,3 +44,12 @@ class QuestionOptionModel(Base):
     text = Column(String, nullable=False)
 
     question = relationship("QuestionModel", back_populates="options")
+    
+class AnswerModel(Base):
+    __tablename__ = "answers"
+
+    id = Column(Integer, primary_key=True, index=True)
+    survey_id = Column(Integer, ForeignKey("surveys.id"))
+    question_id = Column(Integer, ForeignKey("questions.id"))
+    answer = Column(String, nullable=False)  
+
